@@ -3,7 +3,7 @@
 
 ![vueConstrucImgUrl][vueConstrucImgUrl]
 
-一句话概括vue：
+#### 一句话概括vue：
 
 > vue通过尽可能简单的API实现响应的数据绑定和组合的视图组件
 
@@ -13,6 +13,56 @@
 创建一个vue实例后，需要添加指令去帮助我们完成功能：
 
 ![vueDirectiveImgUrl][vueDirectiveImgUrl]
+
+#### 生命周期：8个
+这8个生命周期对应在 vm.$options 中，在源码的 callhooks 方法中遍历执行，执行时把vm作为函数执行的上下文。
+
+在init期间，注册数据包括 data，watcher，props， methods和 computed
+
+#### 双向数据绑定
+
+Object.defineProperty(obj, prop, descriptor)
+
+目标为obj，prop定义或修改的属性名称；descriptor是将被定义或者修改的属性描述符。descriptor有很多可选键值，我们要关心的是get和set方法。get是一个给属性提供的getter方法，当我们访问该属性的时候就触发getter方法；set是一个给属性提供的setter方法，当我们对该属性作出修改的时候就会触发setter 方法。
+
+一旦对象拥有了getter和setter方法，我们可以简单的把这个对象成为响应式对象。
+
+data和props初始化：把props和data初始化都是把它们变成响应式对象。此过程主要有两个操作：
+1. 遍历data函数返回的对象，通过proxy把每一个值 vm._data.xxx 都代理到 vm.xxx 上面
+2. 调用 observe 方法观测整个 data 的变化，把data也变成响应式，可以通过vm._data.xxx访问到定义data返回函数中对应的属性。
+
+我们可以在子组件的中访问到props属性的原因：通过Object.defineProperty 把 target[source][key]的读写变成了对target[key]的读写
+```
+const desc = {
+  emumberable: true,
+  configurable: true,
+  get,
+  set
+}
+export function proxy(target, sourceKey, key) {
+  desc.get = function proxyGetter() {
+    return this[sourceKey][key]
+  }
+  desc.set = function proxySetter(val) {
+    this[sourceKey][key] = val
+  }
+  Object.defineProperty(target, key, desc)
+}
+```
+
+> 原始的 Object.defineProperty 存在问题：
+1. 无法监听数组的变化  => vue内部会修改数组的访问为自定义的方法来实现监听变化。
+2. 必须遍历对象的每个属性
+3. 必须深层遍历嵌套的对象。
+
+在 vue 3.x 版本使用 Proxy 来实现数据代理
+
+
+#### watch 和 computed
+
+computed 计算属性本质上是一个 computed wathcer，一旦我们对计算属性所依赖的数据做修改，就会触发setter过程，通知所有订阅它变化的watcher进行更新，执行watcher.update()方法。实际上 vue内部做了优化，只有当计算属性最终计算的值发生变化才会触发渲染watcher重新渲染。
+
+watch在computed初始化之后执行。本质上侦听属性也是基于watcher实现的，它是一个user wathcer。watcher的构造函数options中有不同的类型，包括deep、user、computed、sync。
 
 
 

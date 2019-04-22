@@ -103,4 +103,4 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 
 * created 过程中，VNode 会调用 createElement ，Virtual Dom 实际上是一个树状结构，每一个 VNode 节点可能有若干个子节点，这些子节点也是 VNode 类型。 在编译 slot 和 v-for 情况下会产生嵌套数组，对应的 children 规范化的方法会把对应结构扁平化。
 
-* update
+* update update
