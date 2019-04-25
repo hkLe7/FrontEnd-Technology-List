@@ -1,0 +1,20 @@
+.content {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  position: relative;
+  
+}
+.content .container {
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
