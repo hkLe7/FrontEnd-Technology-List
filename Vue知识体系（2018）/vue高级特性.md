@@ -60,6 +60,36 @@ vue基于web components规范草案实现的内容分发的API
 </script>
 ```
 
+#### 自定义指令
+除去v-model，v-on和v-bind这些已经封装好的指令，我们还可以自定义指令:
+1. 定义一个全局的v-focus：
+```
+Vue.directive('focus', {
+  inserted: function(el) {
+    el.focus()
+  }
+})
+```
+2. 局部指令，只在组件内部有效，超出组件范围无效，类似局部变量：
+```
+Vue.component('my-component', {
+  template: `<div v-alert>123</div>`,
+  directives: {
+    alert: {
+      inserted: function() {
+        alert(1)
+      }
+    }
+  }
+})
+```
+vue提供了钩子函数实现自定义指令的功能：
+* bind: 指令第一次绑定到元素时候调用
+* inserted: 被绑定元素插入父节点是调用
+* update: 被绑定元素所在模版更新时调用，不管绑定至是否变化。通过比较更新前后的绑定值，可以忽略不必要的模版更新。
+* componentUpdated: 被绑定元素所在模板完成一次更新周期时调用。
+* unbind: 指令与元素解绑时调用。
+
 #### vuex
 专门为vue应用程序开发的状态管理模式；每个vuex应用的核心就是store，包含我们应用中的大部分状态
 

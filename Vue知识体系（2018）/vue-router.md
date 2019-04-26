@@ -77,6 +77,12 @@ Vue-Router 内部定义的 Matcher返回了 match 和 addRoutes 方法，通过�
 * path
 通过name我们可以很快找到record，但是通过path不能，因为计算后的location.path 是一个真实路径。所以在matchRoute中会根据规则匹配，因为是顺序遍历，所有书写路由配置要注意路径的顺序，因为写在前面的会优先尝试匹配。
 
+### $router 和 $route
+1. $router是 Vue-Router 的一个对象，通过Vue.use(VueRouter)和VueRouter构造函数得到一个router的实例对象，这个对象是一个全局的对象，包含了所有的路由和路由的关键属性方法。
+
+2. $route是一个跳转的路由对象，每一个路由都会有一个route对象，是一个局部的对象，可以获取对应的name、path、params、query等
+
+
 #### 路径切换
 
 #### 导航守卫
