@@ -241,3 +241,17 @@ fn1.call(null); // 10 9
 obj.fn1(); // 3 27 
 console.log(window.number); // 20
 ```
+```
+function Foo() {
+  getName = function() {
+    console.log(1)
+  }
+  return this
+}
+Foo.getName = function() {
+  console.log(2)
+}
+Foo.prototype.getName = function() {
+  console.log(3)
+}
+```

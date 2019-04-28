@@ -2,7 +2,7 @@
 call
  */
 
-Function.prototype.mycall = function(context) {
+Function.prototype.myCall = function(context) {
   var context = context || window;
   context.fn = this;
   var args = [];
@@ -19,7 +19,7 @@ Function.prototype.mycall = function(context) {
 /*
 apply
  */
-Function.prototype.myapply = function(context, arr) {
+Function.prototype.myApply = function(context, arr) {
   var context = context || window;
   context.fn = this;
   var args = [];
@@ -38,3 +38,12 @@ Function.prototype.myapply = function(context, arr) {
 /* 
 bind
 */
+
+Function.prototype.myBind = function(context) {
+  var _this = this;
+  var argsParent = Array.prototype.slice.call(arguments, 1);
+  return function() {
+    var args = argsParent.concat(Array.prototype.slice.call(arguments));
+    _this.apply(context, args);
+  }
+}
