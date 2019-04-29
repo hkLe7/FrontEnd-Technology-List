@@ -254,4 +254,50 @@ Foo.getName = function() {
 Foo.prototype.getName = function() {
   console.log(3)
 }
+var getName = function() {
+  console.log(4)
+}
+function getName() {
+  console.log(5)
+}
+
+Foo.getName(); 
+getName();
+Foo().getName();
+getName();
+new Foo.getName();
+new Foo().getName();
+new new Foo().getName();
+```
+
+```
+let a = 0;
+let obj = {
+  a: 10,
+  b() {
+    var a = 20;
+    console.log(this.a)
+  },
+  c: () => {
+    var a = 30;
+    console.log(this.a)
+  }
+}
+let a = 0;
+let obj = {
+  a: 10,
+  b: function() {
+    var a = 20;
+    console.log(this.a)
+  },
+  c: () => {
+    var a = 30;
+    console.log(this.a)
+  }
+}
+let d = { a: 40 }
+obj.b() 
+obj.c() 
+obj.b.bind(d)() 
+obj.c.bind(d)() 
 ```
