@@ -261,9 +261,9 @@ function getName() {
   console.log(5)
 }
 
-Foo.getName(); 
-getName();
-Foo().getName();
+Foo.getName();  // 2
+getName();      // 4 字面量声明比函数式声明优先级高
+Foo().getName();  // 1
 getName();
 new Foo.getName();
 new Foo().getName();
