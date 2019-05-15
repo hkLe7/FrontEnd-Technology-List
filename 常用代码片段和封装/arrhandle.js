@@ -116,15 +116,11 @@ differ(arr1, arr2)
 var arr = [1, 999, 999, 999, 'iioo', 'iioo', 11, 111, 111, '111', false, false, false]
 es5Unique(arr)
 
-
-function sleep(duration) {
-    return new Promise((res, rej) => {
-        console.log('b')
-        setTimeout(res, duration)
-    })
-}
-
-async function asfn() {
-    console.log('a')
-    await sleep(2000)
-    console.log('c')
+// 分解轨迹返回接口数据
+// var obj = 
+// var list = obj.result.data.pointList
+// var arr = []
+// list.forEach(ele=>{
+//   arr.push([ele.lon, ele.lat])
+// })
+// console.log(arr)
