@@ -1,0 +1,19 @@
+{
+  "name": "webGL",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}
