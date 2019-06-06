@@ -117,6 +117,8 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 
 #### vue.$nexttick
 
+监听dom变化
+
 
 #### vue diff算法
 
