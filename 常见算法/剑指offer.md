@@ -39,3 +39,5 @@ function combineSort(arr1, arr2) {
 10. 扫描线 Scan-line algorithm
 
 11. 快排 Quick Sort
+
+12. 单链表树算法和携程机制，实现任务动态分割

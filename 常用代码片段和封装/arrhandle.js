@@ -116,11 +116,12 @@ differ(arr1, arr2)
 var arr = [1, 999, 999, 999, 'iioo', 'iioo', 11, 111, 111, '111', false, false, false]
 es5Unique(arr)
 
-// 分解轨迹返回接口数据
-// var obj = 
-// var list = obj.result.data.pointList
-// var arr = []
-// list.forEach(ele=>{
-//   arr.push([ele.lon, ele.lat])
-// })
-// console.log(arr)
+// 数组flat
+// let arr3 = [1, 3, 5, [9, 10, 11, [5, [0, 9], 77], 99], 99]
+function flat(arr) {
+  while(arr.some(item => Array.isArray(item))) {
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+// flat(arr3)
