@@ -117,7 +117,7 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 
 #### vue.$nexttick
 
-监听dom变化
+使用原生的MutationObserver对象来监听dom变化，此方法要注意使用防抖函数防止多次执行问题
 
 
 #### vue diff算法
