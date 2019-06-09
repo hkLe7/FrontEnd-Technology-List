@@ -1,5 +1,7 @@
 ### vue.js 揭秘学习笔记
+
 #### 准备工作
+
 * 静态检查工具 flow
 
 类型检查两种方式：通过变量的使用上下文来推断变量类型，然后根据这些推断来检查类型
@@ -48,9 +50,11 @@ src
 ```
 
 #### vue.js 源码构建
+
 遵循rollup的构建规则，entry 表示入口JS文件地址，dest表示构建后的js文件地址，format属性表示构建的格式，cjs表示 commonJS 规范，es表示 ES Module 规范，umd表示 UMD 规范。
 
 #### Vue 实例
+
 本质是一个用 Function 实现的类，我们只能通过 new Vue 来实例化它。
 
 为何不使用ES6 的 Class 实现？在调用 xxxMixin 之类的函数时，会把 Vue 当作参数传入，它们的功能都是给 Vue 的 prototype 上扩展一些方法，Vue 按功能把这些扩展分散到多个模块中去实现，而不是在一个模块里面实现所有，这种方式是用 Class 难以实现的。这么做的好处是方便代码维护管理。
@@ -89,7 +93,7 @@ vm._isVue = true
   initProvide(vm) // resolve provide after data/props
   callHook(vm, 'created')
 ```
-主要为以上：合并配置，初始化生命周期，初始化事件中心，初始化渲染，初始化data，props，computed，wathcer等等。
+主要为以上：合并配置，初始化生命周期，初始化事件中心，初始化渲染，初始化data，props，computed，watcher等等。
 
 #### 虚拟dom Virtual Dom
 
@@ -107,7 +111,14 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 
 
 #### vue监听数组变化
+
 通过对数组的7个方法(push, pop, shift, unshift, splice, sort, reverse)重新包装(这里指data中的数组)，并将数组的原型指向包装后的arrayMethods，当数组调用这7个方法，其实是调用arrayMethods中的方法而不是Array.prototype中的方法。同时对push,unshift,splice中插入的新值进行响应式绑定，并向所有依赖发送通知，告知数组的值发生了变化。
 
 
 #### vue.$nexttick
+
+监听dom变化
+
+
+#### vue diff算法
+
