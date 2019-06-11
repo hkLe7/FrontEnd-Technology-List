@@ -122,3 +122,180 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 
 #### vue diff算法
 
+虚拟dom是真实dom的映射，因为操作dom较为消耗性能，所以vue和react选择了虚拟dom的方式来解决操作dom的性能问题。virtual dom很多时候不是最优操作，但是它具有普适性，在效率和可维护性之间达到平衡。
+
+
+diff的过程是调用patch函数，像打补丁一样修改真实dom
+
+```javascript
+function patch (oldVnode, vnode) {
+  if (sameVnode(oldVnode, vnode) {
+    patchVnode(oldVnode, vnode)
+  } else {
+    const oEl = oldVnode.el
+    let parentEle = api.parentNode(oEl)
+    createEle(vnode)
+    if (parentEle !== null) {
+      api.insertBefore(parentEle, vnode.el, api.nextSibling(oEl))
+      api.removeChild(parentEle, oldVnode.el)
+      oldVnode = null
+    }
+  }
+  return vnode
+}
+```
+
+patch接收两个参数，vnode和oldVnode，也就是新旧两个虚拟节点。完整的vnode通常拥有以下属性：
+
+```javascript
+{
+  el: div,
+  tagName: 'DIV',
+  sel: 'div#v.classA',
+  data: null,
+  children: [],
+  text: null,
+}
+```
+
+el属性引用了virtual dom对应的真实dom元素，patch的vnode参数的el最初是null，因为patch之前它还没有对应的真实dom。
+
+##### sameVnode
+
+sameVnode函数是看这两个节点是否值得比较：
+
+```javascript
+function sameVnode(oldVnode, vnode) {
+  return vnode.key === oldVnode.key && vnode.sel === oldVnode.sel
+}
+```
+两个vnode的key和sel相同才去比较它们，当不值得比较会执行else逻辑，直接取得oldVnode.el的父节点并在parentELe中插入新dom，移除旧dom。
+
+进入patch函数之前，vnode.el的值为null，执行patch之后它引用了对应的真实dom。
+
+##### patchNode
+
+patchNode是两个节点的比较
+
+```javascript
+patchVnode (oldVnode, vnode) {
+    const el = vnode.el = oldVnode.el
+    let i, oldCh = oldVnode.children, ch = vnode.children
+    if (oldVnode === vnode) return
+    if (oldVnode.text !== null && vnode.text !== null && oldVnode.text !== vnode.text) {
+        api.setTextContent(el, vnode.text)
+    }else {
+        updateEle(el, vnode, oldVnode)
+        if (oldCh && ch && oldCh !== ch) {
+            updateChildren(el, oldCh, ch)
+        }else if (ch){
+            createEle(vnode) //create el's children dom
+        }else if (oldCh){
+            api.removeChildren(el)
+        }
+    }
+}
+```
+
+const el = vnode.el = oldVnode.el 让vnode.el引用到现在的真实dom，当el修改时，vonde.el会同步发生变化。
+
+节点的比较有5种情况：
+
+1. if (oldVnode === vnode)，他们的引用一致，可以认为没有变化。
+
+2. if(oldVnode.text !== null && vnode.text !== null && oldVnode.text !== vnode.text)，文本节点的比较，需要修改，则会调用Node.textContent = vnode.text。
+
+3. if( oldCh && ch && oldCh !== ch ), 两个节点都有子节点，而且它们不一样，这样我们会调用updateChildren函数比较子节点，这是diff的核心，后边会讲到。
+
+4. else if (ch)，只有新的节点有子节点，调用createEle(vnode)，vnode.el已经引用了老的dom节点，createEle函数会在老dom节点上添加子节点。
+
+5. else if (oldCh)，新节点没有子节点，老节点有子节点，直接删除老节点。
+
+##### updateChildren
+
+updateChildren 函数对子节点的多种情况进行了处理
+
+```javascript
+function updateChildren (parentElm, oldCh, newCh) {
+  let oldStartIdx = 0, newStartIdx = 0
+  let oldEndIdx = oldCh.length - 1
+  let oldStartVnode = oldCh[0]
+  let oldEndVnode = oldCh[oldEndIdx]
+  let newEndIdx = newCh.length - 1
+  let newStartVnode = newCh[0]
+  let newEndVnode = newCh[newEndIdx]
+  let oldKeyToIdx
+  let idxInOld
+  let elmToMove
+  let before
+  while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+    if (oldStartVnode == null) {   //对于vnode.key的比较，会把oldVnode = null
+        oldStartVnode = oldCh[++oldStartIdx] 
+    }else if (oldEndVnode == null) {
+        oldEndVnode = oldCh[--oldEndIdx]
+    }else if (newStartVnode == null) {
+        newStartVnode = newCh[++newStartIdx]
+    }else if (newEndVnode == null) {
+        newEndVnode = newCh[--newEndIdx]
+    }else if (sameVnode(oldStartVnode, newStartVnode)) {
+        patchVnode(oldStartVnode, newStartVnode)
+        oldStartVnode = oldCh[++oldStartIdx]
+        newStartVnode = newCh[++newStartIdx]
+    }else if (sameVnode(oldEndVnode, newEndVnode)) {
+        patchVnode(oldEndVnode, newEndVnode)
+        oldEndVnode = oldCh[--oldEndIdx]
+        newEndVnode = newCh[--newEndIdx]
+    }else if (sameVnode(oldStartVnode, newEndVnode)) {
+        patchVnode(oldStartVnode, newEndVnode)
+        api.insertBefore(parentElm, oldStartVnode.el, api.nextSibling(oldEndVnode.el))
+        oldStartVnode = oldCh[++oldStartIdx]
+        newEndVnode = newCh[--newEndIdx]
+    }else if (sameVnode(oldEndVnode, newStartVnode)) {
+        patchVnode(oldEndVnode, newStartVnode)
+        api.insertBefore(parentElm, oldEndVnode.el, oldStartVnode.el)
+        oldEndVnode = oldCh[--oldEndIdx]
+        newStartVnode = newCh[++newStartIdx]
+    }else {
+      // 使用key时的比较
+      if (oldKeyToIdx === undefined) {
+          oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx) // 有key生成index表
+      }
+      idxInOld = oldKeyToIdx[newStartVnode.key]
+      if (!idxInOld) {
+          api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)
+          newStartVnode = newCh[++newStartIdx]
+      }
+      else {
+        elmToMove = oldCh[idxInOld]
+        if (elmToMove.sel !== newStartVnode.sel) {
+            api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)
+        }else {
+            patchVnode(elmToMove, newStartVnode)
+            oldCh[idxInOld] = null
+            api.insertBefore(parentElm, elmToMove.el, oldStartVnode.el)
+        }
+        newStartVnode = newCh[++newStartIdx]
+      }
+    }
+  }
+  if (oldStartIdx > oldEndIdx) {
+      before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].el
+      addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)
+  }else if (newStartIdx > newEndIdx) {
+      removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
+  }
+}
+```
+
+diff过程可以概括为：oldCh和newCh各有两个头尾的变量StartIdx和OldIdx，它们的2个变量相互比较，一共有4种比较方式。如果4种比较都没匹配，如果设置了key，就会用key进行比较，比较的时候变量会往中间靠，一旦StartIdx > EndIdx表明oldCh和newCh至少有一个已经遍历完了，就会结束比较。
+
+设置key和不设置key的区别：
+
+不设key，newCh和oldCh只会进行头尾两端的相互比较，设key后，除了头尾两端的比较外，还会从用key生成的对象oldKeyToIdx中查找匹配的节点，所以为节点设置key可以更高效的利用dom。
+
+
+
+
+
+
+
