@@ -115,9 +115,14 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 通过对数组的7个方法(push, pop, shift, unshift, splice, sort, reverse)重新包装(这里指data中的数组)，并将数组的原型指向包装后的arrayMethods，当数组调用这7个方法，其实是调用arrayMethods中的方法而不是Array.prototype中的方法。同时对push,unshift,splice中插入的新值进行响应式绑定，并向所有依赖发送通知，告知数组的值发生了变化。
 
 
-#### vue.$nexttick
+#### vue.$nexttick 和 vue.nexttick
 
 使用原生的MutationObserver对象来监听dom变化，此方法要注意使用防抖函数防止多次执行问题
+
+如果在created中进行dom操作一定要放到vue.nexttick()中，因为created中并未完成dom渲染，同时在created中获取ref也是空数组
+
+为了在数据变化之后等待 Vue 完成更新 DOM ，可以在数据变化之后立即使用 Vue.nextTick(callback) 。这样回调函数在 DOM 更新完成后就会调用。
+
 
 
 #### vue diff算法
