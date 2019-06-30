@@ -37,11 +37,11 @@ function checkMost(str) {
     }
 
     let charObj = {};
+    let maxValue = 1, maxStr = '';
     for(let i = 0; i < str.length; i++) {
         !charObj[str.charAt(i)] ? charObj[str.charAt(i)] = 1 : charObj[str.charAt(i)] += 1;
     }
-
-    let maxValue = 1, maxStr = '';
+    
     for (k in charObj) {
         if (charObj[k] > maxValue) {
             maxStr = k

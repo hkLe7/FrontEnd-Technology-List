@@ -241,31 +241,31 @@ function updateChildren (parentElm, oldCh, newCh) {
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
     if (oldStartVnode == null) {   //对于vnode.key的比较，会把oldVnode = null
         oldStartVnode = oldCh[++oldStartIdx] 
-    }else if (oldEndVnode == null) {
+    } else if (oldEndVnode == null) {
         oldEndVnode = oldCh[--oldEndIdx]
-    }else if (newStartVnode == null) {
+    } else if (newStartVnode == null) {
         newStartVnode = newCh[++newStartIdx]
-    }else if (newEndVnode == null) {
+    } else if (newEndVnode == null) {
         newEndVnode = newCh[--newEndIdx]
-    }else if (sameVnode(oldStartVnode, newStartVnode)) {
+    } else if (sameVnode(oldStartVnode, newStartVnode)) {
         patchVnode(oldStartVnode, newStartVnode)
         oldStartVnode = oldCh[++oldStartIdx]
         newStartVnode = newCh[++newStartIdx]
-    }else if (sameVnode(oldEndVnode, newEndVnode)) {
+    } else if (sameVnode(oldEndVnode, newEndVnode)) {
         patchVnode(oldEndVnode, newEndVnode)
         oldEndVnode = oldCh[--oldEndIdx]
         newEndVnode = newCh[--newEndIdx]
-    }else if (sameVnode(oldStartVnode, newEndVnode)) {
+    } else if (sameVnode(oldStartVnode, newEndVnode)) {
         patchVnode(oldStartVnode, newEndVnode)
         api.insertBefore(parentElm, oldStartVnode.el, api.nextSibling(oldEndVnode.el))
         oldStartVnode = oldCh[++oldStartIdx]
         newEndVnode = newCh[--newEndIdx]
-    }else if (sameVnode(oldEndVnode, newStartVnode)) {
+    } else if (sameVnode(oldEndVnode, newStartVnode)) {
         patchVnode(oldEndVnode, newStartVnode)
         api.insertBefore(parentElm, oldEndVnode.el, oldStartVnode.el)
         oldEndVnode = oldCh[--oldEndIdx]
         newStartVnode = newCh[++newStartIdx]
-    }else {
+    } else {
       // 使用key时的比较
       if (oldKeyToIdx === undefined) {
           oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx) // 有key生成index表
@@ -279,7 +279,7 @@ function updateChildren (parentElm, oldCh, newCh) {
         elmToMove = oldCh[idxInOld]
         if (elmToMove.sel !== newStartVnode.sel) {
             api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)
-        }else {
+        } else {
             patchVnode(elmToMove, newStartVnode)
             oldCh[idxInOld] = null
             api.insertBefore(parentElm, elmToMove.el, oldStartVnode.el)
@@ -291,7 +291,7 @@ function updateChildren (parentElm, oldCh, newCh) {
   if (oldStartIdx > oldEndIdx) {
       before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].el
       addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)
-  }else if (newStartIdx > newEndIdx) {
+  } else if (newStartIdx > newEndIdx) {
       removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
   }
 }
