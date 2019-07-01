@@ -10,12 +10,13 @@ function bubbleSort(arr) {
     return arr;
 }
 
+
 // 快排
 function quickSort(arr, l, r) {
     if(l < r) {
         var i = l, j = r, x = arr[i];
         while(i < j) {
-            while( i< j && arr[j] > x) j--;
+            while(i < j && arr[j] > x) j--;
             if(i < j) arr[i++] = arr[j];
             while(i < j && arr[i] < x) i++;
             if(i < j) arr[j--] = arr[i];

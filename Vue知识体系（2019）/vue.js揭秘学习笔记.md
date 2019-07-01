@@ -115,9 +115,14 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 通过对数组的7个方法(push, pop, shift, unshift, splice, sort, reverse)重新包装(这里指data中的数组)，并将数组的原型指向包装后的arrayMethods，当数组调用这7个方法，其实是调用arrayMethods中的方法而不是Array.prototype中的方法。同时对push,unshift,splice中插入的新值进行响应式绑定，并向所有依赖发送通知，告知数组的值发生了变化。
 
 
-#### vue.$nexttick 和 vue.nexttick
+#### vue.$nexttick
 
-使用原生的MutationObserver对象来监听dom变化，此方法要注意使用防抖函数防止多次执行问题
+使用原生的 MutationObserver 对象来监听dom变化，MutationObserver是一个构造器，接受一个callback参数，用来返回节点变化： mutations - 节点变化的记录列表；observe - 构造 MutationObserver 对象。
+
+observe对象有三个方法：
+1. 设置观察目标，接受两个参数，target：观察目标 options：观察目标设置选项
+2. disConnect: 阻止观察者观察任何改变
+3. takeRecord: 清空队列并返回其中的内容
 
 如果在created中进行dom操作一定要放到vue.nexttick()中，因为created中并未完成dom渲染，同时在created中获取ref也是空数组
 
@@ -236,31 +241,31 @@ function updateChildren (parentElm, oldCh, newCh) {
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
     if (oldStartVnode == null) {   //对于vnode.key的比较，会把oldVnode = null
         oldStartVnode = oldCh[++oldStartIdx] 
-    }else if (oldEndVnode == null) {
+    } else if (oldEndVnode == null) {
         oldEndVnode = oldCh[--oldEndIdx]
-    }else if (newStartVnode == null) {
+    } else if (newStartVnode == null) {
         newStartVnode = newCh[++newStartIdx]
-    }else if (newEndVnode == null) {
+    } else if (newEndVnode == null) {
         newEndVnode = newCh[--newEndIdx]
-    }else if (sameVnode(oldStartVnode, newStartVnode)) {
+    } else if (sameVnode(oldStartVnode, newStartVnode)) {
         patchVnode(oldStartVnode, newStartVnode)
         oldStartVnode = oldCh[++oldStartIdx]
         newStartVnode = newCh[++newStartIdx]
-    }else if (sameVnode(oldEndVnode, newEndVnode)) {
+    } else if (sameVnode(oldEndVnode, newEndVnode)) {
         patchVnode(oldEndVnode, newEndVnode)
         oldEndVnode = oldCh[--oldEndIdx]
         newEndVnode = newCh[--newEndIdx]
-    }else if (sameVnode(oldStartVnode, newEndVnode)) {
+    } else if (sameVnode(oldStartVnode, newEndVnode)) {
         patchVnode(oldStartVnode, newEndVnode)
         api.insertBefore(parentElm, oldStartVnode.el, api.nextSibling(oldEndVnode.el))
         oldStartVnode = oldCh[++oldStartIdx]
         newEndVnode = newCh[--newEndIdx]
-    }else if (sameVnode(oldEndVnode, newStartVnode)) {
+    } else if (sameVnode(oldEndVnode, newStartVnode)) {
         patchVnode(oldEndVnode, newStartVnode)
         api.insertBefore(parentElm, oldEndVnode.el, oldStartVnode.el)
         oldEndVnode = oldCh[--oldEndIdx]
         newStartVnode = newCh[++newStartIdx]
-    }else {
+    } else {
       // 使用key时的比较
       if (oldKeyToIdx === undefined) {
           oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx) // 有key生成index表
@@ -274,7 +279,7 @@ function updateChildren (parentElm, oldCh, newCh) {
         elmToMove = oldCh[idxInOld]
         if (elmToMove.sel !== newStartVnode.sel) {
             api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)
-        }else {
+        } else {
             patchVnode(elmToMove, newStartVnode)
             oldCh[idxInOld] = null
             api.insertBefore(parentElm, elmToMove.el, oldStartVnode.el)
@@ -286,7 +291,7 @@ function updateChildren (parentElm, oldCh, newCh) {
   if (oldStartIdx > oldEndIdx) {
       before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].el
       addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)
-  }else if (newStartIdx > newEndIdx) {
+  } else if (newStartIdx > newEndIdx) {
       removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
   }
 }
