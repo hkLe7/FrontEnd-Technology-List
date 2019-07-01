@@ -13,8 +13,7 @@ function palindrome(str) {
     return palindrome(lowRegStr.slice(1, lowRegStr.length - 1));
 }
 
-// 获取url并转化为obj输出
-const urlToParamsObj = urlStr => JSON.parse(`{"${decodeURIComponent(urlStr.split('?')[1]).replace(/&/g, '","').replace(/=/g, '":"')}"}`)
+
 
 // 数组转化千分位
 const toDecimalMark = num => num.toLocaleString('en-US')
@@ -66,7 +65,10 @@ const formCamelCase = (str, separator = '_') => str
 .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2').toLowerCase()
 
 
-// 解析url
+// 解析url正则
+const urlToParamsObj = urlStr => JSON.parse(`{"${decodeURIComponent(urlStr.split('?')[1]).replace(/&/g, '","').replace(/=/g, '":"')}"}`)
+
+// 解析url常规
 function resolveURL(url) {
     let args = url.split('?')[1].split('&'),
     obj = {},
