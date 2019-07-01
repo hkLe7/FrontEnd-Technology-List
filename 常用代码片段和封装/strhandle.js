@@ -1,4 +1,6 @@
-// 字符串操作
+/**
+ 字符串操作 
+ **/ 
 // 1. 判断回文字符串
 function palindrome(str) {
     var re = /[\W_]/g;
@@ -11,6 +13,11 @@ function palindrome(str) {
     return palindrome(lowRegStr.slice(1, lowRegStr.length - 1));
 }
 
+// 获取url并转化为obj输出
+const urlToParamsObj = urlStr => JSON.parse(`{"${decodeURIComponent(urlStr.split('?')[1]).replace(/&/g, '","').replace(/=/g, '":"')}"}`)
+
+// 数组转化千分位
+const toDecimalMark = num => num.toLocaleString('en-US')
 
 // 返回字母出现次数
 function accountTimesInStr(str) {
@@ -36,9 +43,11 @@ function checkMost(str) {
         return `${str}: 1次`
     }
 
-    let charObj = {};
+    let charObj = {}, 
+    maxValue = 1, 
+    maxStr = '';
     for(let i = 0; i < str.length; i++) {
-        !charObj[str.charAt(i)] ? charObj[str.charAt(i)] = 1 : charObj[str.charAt(i)] += 1;
+      !charObj[str.charAt(i)] ? charObj[str.charAt(i)] = 1 : charObj[str.charAt(i)] += 1;
     }
 
     let maxValue = 1, maxStr = '';
@@ -50,6 +59,12 @@ function checkMost(str) {
     }
     return `${maxStr}: ${maxValue}次`
 }
+
+// 驼峰字符串格式化
+const formCamelCase = (str, separator = '_') => str
+.replace(/([a-z\d])([A-Z])/g, '$1' + separator + '$2')
+.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2').toLowerCase()
+
 
 // 解析url
 function resolveURL(url) {

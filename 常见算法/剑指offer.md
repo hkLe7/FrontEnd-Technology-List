@@ -21,6 +21,8 @@ function combineSort(arr1, arr2) {
   return result
 }
 ```
+https://www.zhihu.com/question/19830721/answer/667233164
+
 
 3. 二分搜索 Binary Search
 

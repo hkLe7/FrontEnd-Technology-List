@@ -124,4 +124,6 @@ function flat(arr) {
   }
   return arr
 }
+// 递归实现
+const deepFlat = arr => [].concat(...arr.map(item => Array.isArray(item) ? deepFlat(item) : item))
 // flat(arr3)
