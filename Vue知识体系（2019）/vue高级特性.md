@@ -13,6 +13,7 @@
 
 
 #### 通过key管理可复用元素
+
 1. 为了保证高效渲染我们常常复用已有元素。
 
 比如一个登录组件内的登录/注册功能，我们一般不必同时写两套同样的页面模板。
@@ -22,12 +23,15 @@
 如果我们不想复用也有元素，切换到注册是，需要清空账号和密码，那么可以在标签内加入key="username-input" 和 key="username-password" ,就清除复用了，此时 Vue 元素就是重头开始渲染。
 
 #### v-if v-show v-for
+
 * v-show: 相当于切换css的display
 * v-if: 相当于节点增添和删除
 * v-for的优先级比v-if更高
 
 #### is特性
+
 通过is关键字来在固有dom元素中写入自定义组件
+
 ```
 <table>
   <tr is="my-row"></tr>
@@ -38,6 +42,7 @@ is关键字可以被用来处理动态组件
 
 
 #### slot插槽
+
 vue基于web components规范草案实现的内容分发的API
 
 有时候组件自身的定义会被template替换掉，那么我们在template中假如slot标签占个位置就好了
@@ -67,9 +72,12 @@ vue基于web components规范草案实现的内容分发的API
 </script>
 ```
 
-#### 自定义指令
+#### 
+
 除去v-model，v-on和v-bind这些已经封装好的指令，我们还可以自定义指令:
+
 1. 定义一个全局的v-focus：
+
 ```
 Vue.directive('focus', {
   inserted: function(el) {
@@ -77,7 +85,9 @@ Vue.directive('focus', {
   }
 })
 ```
+
 2. 局部指令，只在组件内部有效，超出组件范围无效，类似局部变量：
+
 ```
 Vue.component('my-component', {
   template: `<div v-alert>123</div>`,
@@ -90,7 +100,9 @@ Vue.component('my-component', {
   }
 })
 ```
+
 vue提供了钩子函数实现自定义指令的功能：
+
 * bind: 指令第一次绑定到元素时候调用
 * inserted: 被绑定元素插入父节点是调用
 * update: 被绑定元素所在模版更新时调用，不管绑定至是否变化。通过比较更新前后的绑定值，可以忽略不必要的模版更新。
@@ -98,13 +110,16 @@ vue提供了钩子函数实现自定义指令的功能：
 * unbind: 指令与元素解绑时调用。
 
 #### vuex
+
 专门为vue应用程序开发的状态管理模式；每个vuex应用的核心就是store，包含我们应用中的大部分状态
 
 store的状态不能直接改变，需要通过commit显示的提交到mutation。
 
 vuex的两个关键方法：
+
 * mapActions管理所有事件的行为，处理所有actions的方法，里面传入处理的事件，是一个数组，放在methods中就可以
 * mapGetters把getters获取的数据映射到此，放在computed里面
+
 1. getters: 获取到数据，然后映射到mapGetters中，然后可以在组件中直接引入
 2. state: 数据初始化，或者说组件中需要的数据
 3. actions: 处理你要干什么，异步请求，判断，或者流程控制，通过commit提交到mutations

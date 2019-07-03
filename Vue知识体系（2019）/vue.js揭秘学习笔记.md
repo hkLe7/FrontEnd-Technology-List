@@ -35,6 +35,7 @@ var obj: { a: string, b: number, c:Array<string>, d: Bar } => {
   d: new Bar('hello', 3)
 }
 ```
+
 flow的写法个人看来是 typescript写法和es-lint的折衷
 
 #### 源码目录结构
@@ -93,6 +94,7 @@ vm._isVue = true
   initProvide(vm) // resolve provide after data/props
   callHook(vm, 'created')
 ```
+
 主要为以上：合并配置，初始化生命周期，初始化事件中心，初始化渲染，初始化data，props，computed，watcher等等。
 
 #### 虚拟dom Virtual Dom
@@ -114,12 +116,12 @@ VNode 是对真实 dom 的一种抽象描述，核心定义主要是几个关键
 
 通过对数组的7个方法(push, pop, shift, unshift, splice, sort, reverse)重新包装(这里指data中的数组)，并将数组的原型指向包装后的arrayMethods，当数组调用这7个方法，其实是调用arrayMethods中的方法而不是Array.prototype中的方法。同时对push,unshift,splice中插入的新值进行响应式绑定，并向所有依赖发送通知，告知数组的值发生了变化。
 
-
 #### vue.$nexttick
 
 使用原生的 MutationObserver 对象来监听dom变化，MutationObserver是一个构造器，接受一个callback参数，用来返回节点变化： mutations - 节点变化的记录列表；observe - 构造 MutationObserver 对象。
 
 observe对象有三个方法：
+
 1. 设置观察目标，接受两个参数，target：观察目标 options：观察目标设置选项
 2. disConnect: 阻止观察者观察任何改变
 3. takeRecord: 清空队列并返回其中的内容
@@ -179,6 +181,7 @@ function sameVnode(oldVnode, vnode) {
   return vnode.key === oldVnode.key && vnode.sel === oldVnode.sel
 }
 ```
+
 两个vnode的key和sel相同才去比较它们，当不值得比较会执行else逻辑，直接取得oldVnode.el的父节点并在parentELe中插入新dom，移除旧dom。
 
 进入patch函数之前，vnode.el的值为null，执行patch之后它引用了对应的真实dom。
@@ -302,10 +305,3 @@ diff过程可以概括为：oldCh和newCh各有两个头尾的变量StartIdx和O
 设置key和不设置key的区别：
 
 不设key，newCh和oldCh只会进行头尾两端的相互比较，设key后，除了头尾两端的比较外，还会从用key生成的对象oldKeyToIdx中查找匹配的节点，所以为节点设置key可以更高效的利用dom。
-
-
-
-
-
-
-
