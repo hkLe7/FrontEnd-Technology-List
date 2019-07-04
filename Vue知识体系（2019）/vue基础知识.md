@@ -15,6 +15,7 @@
 ![vueDirectiveImgUrl][vueDirectiveImgUrl]
 
 #### 生命周期：8个
+
 这8个生命周期对应在 vm.$options 中，在源码的 callhooks 方法中遍历执行，执行时把vm作为函数执行的上下文。
 
 在init期间，注册数据包括 data，watcher，props， methods和 computed
