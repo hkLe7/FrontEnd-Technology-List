@@ -1,6 +1,22 @@
 ### 剑指offer
 1. 在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。 
 ```
+function find(target, arr) {
+  const m = arr.length,
+        n = arr[0].length;
+  let row = 0,
+      col = m - 1;
+  if (m === 0 && n === 0) return false
+  while (row <= n - 1 && col >= 0) {
+    if (target > arr[row][col]) {
+      row++
+    } else if (target < arr[row][col]) {
+      col--
+    } else {
+      return true
+    }
+  }
+}
 
 ```
 2. 合并两个有序数组
@@ -43,3 +59,21 @@ https://www.zhihu.com/question/19830721/answer/667233164
 11. 快排 Quick Sort
 
 12. 单链表树算法和携程机制，实现任务动态分割
+
+13. 前端分片
+```
+function multistep(steps,args,callback){
+    var tasks = steps.concat();
+
+    setTimeout(function(){
+        var task = tasks.shift();
+        task.apply(null, args || []);   //调用Apply参数必须是数组
+
+        if(tasks.length > 0){
+            setTimeout(arguments.callee, 25);
+        }else{
+            callback();
+        }
+    },25);
+}
+```

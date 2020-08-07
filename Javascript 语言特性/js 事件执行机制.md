@@ -111,6 +111,7 @@ console.log("end");
 // A2
 // B2
 // B3
+// setTimeout
 ```
 
 1. setTimeout异步任务，到Event Table执行完毕后将callback放入Event Queue宏任务队列等待主线程执行

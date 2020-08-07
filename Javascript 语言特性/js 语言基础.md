@@ -350,7 +350,7 @@ delete Scope[0]; // remove specialObject from the front of scope chain
 ```
 ##### 闭包
 
-定义：能够读取其他函数内部变量的函数。
+定义：能够读取其他函数内部变量的函数。js中，内部函数总是可以访问其所在的外部函数的参数和变量，即使是在外部函数被销毁之后。
 
 函数A返回了函数B，并且B中使用了A的变量，函数B就被称为闭包。
 
@@ -555,7 +555,9 @@ ES6模块：
 4. 模块引用：es6模块中，导出的并不是模块的值拷贝，而是这个模块的引用
 
 AMD：
-AMD是RequireJs的规范
+AMD是RequireJs的规范，通过 define 方法定义模块，通过 require 方法实现代码的模块加载
+AMD依赖前置，CMD依赖就近
+CMD 是同步加载规范，AMD 是非同步加载规范，允许指定的回调函数
 ```
 define(['./a', './b'], function(a, b) {
     a.do()

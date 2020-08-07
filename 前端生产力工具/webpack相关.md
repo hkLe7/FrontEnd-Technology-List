@@ -196,3 +196,18 @@ module.exports = [ serverConfig, clientConfig ]
 
 ##### 模块热替换
 HMR
+
+#### 打包优化
+
+1. 打包大小
+ 1.1 使用 CommonsChunk 单独打包第三方库
+ 1.2 使用 Externals，通过外部引用的方法引入第三方库
+ 1.3 DLL & DllRerefence 通过前置依赖包的构建，来提高 build 和 rebuild 的构建效率，只要第三方库没有变化，之后的每次build只需要打包自己的业务代码，解决 Externals 多次引用的问题
+2. 打包速度
+ 2.1 优化 loader 配置，缩小 loader 匹配范围(include/exclude),通过排除loader匹配范围，精确命中文件；缓存 loader 执行结果(cacheDirectory),
+ 2.2 resolve 配置优化： 优化模块查找路径 resolve.modules, 用 resolve.alias 配置路径别名
+ 2.3 module.noparse, 使用了 noparse 的模块不会被 loaders 解析，当我们使用的库太大，并且其中不包含 import, define 和 require 的调用，就可以使用配置提高性能。让 webpack 忽略对部分没采用模块化的文件递归解析处理。
+ 2.4 HappyPack 让 webpack 对 loader 的执行过程，从单一进程模式扩展为多进程模式，任务分解给多个子进程并发执行，子进程处理完后把结果发给主进程。从而加速代码构建
+ 2.4 ParallelUglifyPlugin 帮助多入口的项目加快构建速度。把对js的串行压缩变为多进程的 uglify。
+3. Treeshaking 
+ 剔除冗余代码。静态的 ES6 模块拆分，通过 import 和 exports 导入和导出
