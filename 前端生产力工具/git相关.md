@@ -9,7 +9,7 @@ git log 命令可以显示所有提交过的版本信息，加参数 --pretty=on
 * git reflog
 git reflog 命令可以查看所有分支的所有git操作记录（包括已经被删除的commit 记录和 reset 的操作）
 
-#### git reset 和 git revert
+#### git reset 和 git **revert**
 * git reset
 
 回滚到之前提交的某个版本，恢复的是此版本前的commit

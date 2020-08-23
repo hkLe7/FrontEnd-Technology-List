@@ -8,6 +8,8 @@ Vuex 是一种状态管理模式：简单的理解就是，你在state定义了�
 Vuex 的核心是store。store是一个容器，包含应用中大部分的状态state。 Vuex 和普通全局api的区别：
 *  Vuex的状态存储是响应式的。当Vue组件从store读取状态的时候，如果store的状态发生变化，那么相应的组件也会相应的得到高效的更新。
 * 不能直接改变store中的状态。改变store中的状态的唯一途径就是显式提交(commit)mutation。这样使得我们可以方便的跟踪每一个状态的变化，从而让我们能够实现一些工具帮我们更好的调整应用。
+* mutation 是定义在store中的方法，可以直接在任何组件中触发 mutation 执行所定义的方法。
+* mutation 方法是同步的，如果我们需要异步交互，则需要在 vuex 中定义 actions，然后在组件中用 dispatch 触发对应的 action
 
 #### store
 store数据结构是树型，支持我们按照模块划分来对不同模块进行数据分割。store本身可以理解为一个root module。

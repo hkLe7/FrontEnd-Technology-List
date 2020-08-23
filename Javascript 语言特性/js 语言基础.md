@@ -541,14 +541,14 @@ var load = function(module) {
 ```
 再来说module.exports 和 exports，用法其实是相似的，但是不能对exports直接赋值，直接赋值不会有任何效果。
 
-对于CommonJS和ES6中的模块化，两者的区别是：
+对于 CommonJS 和 ES6 中的模块化，两者的区别是：
 CommonJS规范在Node中发扬光大，它有以下特性：
 1. 动态加载模块：CommonJS模块的动态加载能轻松实现懒加载
 2. 加载整个模块：CommonJS模块中，导出的是整个模块
 3. 每个模块皆为对象：CommonJS模块都被视为一个对象
 4. 值拷贝：CommonJS模块输出和函数的值传递相似，都是值的拷贝
 
-ES6模块：
+ES6 模块：
 1. 静态解析：在解析阶段就确定输出的模块，所以es6模块的import一般写在引入文件的开头
 2. 模块不是对象：在es6模块中，每个模块并不会当作一个对象看待
 3. 加载的不是整个模块：在es6模块中经常会有多个export导出

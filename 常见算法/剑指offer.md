@@ -58,6 +58,23 @@ https://www.zhihu.com/question/19830721/answer/667233164
 
 11. 快排 Quick Sort
 
+```
+function quickSort(arr) {
+  if (arr.length <=1) return arr
+  const index = parseInt(arr.length / 2)
+  const flagValue = arr[index]
+  let leftArr = [],
+      rightArr = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (index === i) continue
+    if (arr[i] <= flagValue) leftArr.push(arr[i]); else rigthArr.push(arr[i])
+  }
+
+  return [...quickSort(leftArr), flagValue, ...quickSort(rightArr)]
+}
+```
+
 12. 单链表树算法和携程机制，实现任务动态分割
 
 13. 前端分片
